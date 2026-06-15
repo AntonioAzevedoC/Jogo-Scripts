@@ -8,6 +8,7 @@ const AttackMenu = ({
   setDataCha,
   dataOpponent,
   setDataOpponent,
+  closeMenus,
 }) => {
   return (
     <div className="actions attack">
@@ -15,6 +16,7 @@ const AttackMenu = ({
       {dataCha.attacks.map((atk) => {
         return (
           <button
+            key={atk}
             onClick={() => {
               actionsMenu(
                 `${atk}`,
@@ -24,6 +26,7 @@ const AttackMenu = ({
                 setDataOpponent,
               );
               onAction(`${atk}`);
+              onClose();
             }}
           >
             {atk}

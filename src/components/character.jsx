@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import TypewriterComponent from "typewriter-effect";
+
 import AttackMenu from "./attackMenu";
 import MagicMenu from "./magicMenu";
 import PotionsMenu from "./potionsMenu";
@@ -12,6 +14,7 @@ export default function Character({
   isHero,
   onAction,
   isTurn,
+  lastAction,
 }) {
   // State for menus
   const [attackMenu, setAttackMenu] = useState(false);
@@ -43,6 +46,17 @@ export default function Character({
     setMagicMenu(false);
   };
 
+  const type = (
+    <TypewriterComponent
+      options={{
+        autoStart: true,
+        delay: 40,
+        loop: true,
+        skipAddStyles: true,
+      }}
+    />
+  );
+
   return (
     <div className="character">
       {/* HP bar */}
@@ -58,23 +72,27 @@ export default function Character({
       </h1>
 
       {/* Main Menu */}
-      {isHero && !attackMenu && !magicMenu && !potionsMenu && (
+      {!attackMenu && !magicMenu && !potionsMenu && (
         <div className="actions">
-          <button
-            disabled={!isTurn}
-            onClick={() => openAttackMenu(setDataCha, setDataOpponent)}
-          >
-            Atacar
-          </button>
-          <button disabled={!isTurn} onClick={() => openMagicMenu()}>
-            Magias
-          </button>
-          <button disabled={!isTurn} onClick={() => openPotionsMenu()}>
-            Usar Poção
-          </button>
-          <button disabled={!isTurn} onClick={() => onAction("Flee")}>
-            Fugir
-          </button>
+          {isTurn && (
+            <>
+              <button
+                disabled={!isTurn}
+                onClick={() => openAttackMenu(setDataCha, setDataOpponent)}
+              >
+                Atacar
+              </button>
+              <button disabled={!isTurn} onClick={() => openMagicMenu()}>
+                Magias
+              </button>
+              <button disabled={!isTurn} onClick={() => openPotionsMenu()}>
+                Usar Poção
+              </button>
+              <button disabled={!isTurn} onClick={() => onAction("Flee")}>
+                Fugir
+              </button>
+            </>
+          )}
         </div>
       )}
 
@@ -111,13 +129,34 @@ export default function Character({
           setDataCha={setDataCha}
         />
       )}
+
+      {/* If turn is over, show message */}
+      {lastAction?.length && lastAction?.length !== 0 ? (
+        <div className="messages">
+          <h2>
+            <TypewriterComponent
+              options={{
+                strings: [`${lastAction[1]} usou ${lastAction[0]}`],
+                autoStart: true,
+                delay: 40,
+                loop: true,
+                skipAddStyles: true,
+                pauseFor: 20000,
+              }}
+            />
+          </h2>
+        </div>
+      ) : null}
     </div>
   );
 }
 
-// After action, change turns
 // Enemy takes a random action, add weights to actions
-// Also change turns after enemy turn
 // Add win and lose condition (HP = 0)
 // Add three different enemies to choose from, and page to choose enemy
 // Add some art
+
+// DONE:
+
+// After action, change turns
+// Also change turns after enemy turn

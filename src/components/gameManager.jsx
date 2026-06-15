@@ -5,9 +5,12 @@ function GameManager() {
   const [round, setRound] = useState(0);
   const [isHeroTurn, setIsHeroTurn] = useState(true);
   const [isVillainTurn, setIsVillainTurn] = useState(false);
+  const [lastAct, setLastAct] = useState([]);
+
   const hero = {
     NAME: "Home(r)", // These suggestions are so stupid
-    HP: 100,
+    HP: 90,
+    HP_MAX: 100,
     PHY_DMG: 50,
     PHY_DEF: 20,
     MAG_DMG: 50,
@@ -25,6 +28,7 @@ function GameManager() {
   const villain = {
     NAME: "Villain Guy",
     HP: 200,
+    HP_MAX: 200,
     PHY_DMG: 50,
     PHY_DEF: 20,
     MAG_DMG: 50,
@@ -32,7 +36,7 @@ function GameManager() {
     SPEED: 100, // Whoever has greater speed acts first, if one character has more than double the speed of the other, it acts twice
 
     attacks: ["Espancar", "Aparar", "Preparo"],
-    spells: ["Raio", "Amaldiçoar", "Preparo"],
+    spells: ["Raio", "Amaldiçoar", "Roubar Vida"],
     potions: [
       ["Cura", 2],
       ["Velocidade", 1],
@@ -43,8 +47,9 @@ function GameManager() {
   const [villainState, setVillainState] = useState(villain);
 
   const charAction = (act) => {
-    console.log(act);
-    return act;
+    setLastAct([act, isHeroTurn === true ? heroState.NAME : villainState.NAME]);
+    setIsHeroTurn((prev) => !prev);
+    setIsVillainTurn((prev) => !prev);
   };
 
   return (
@@ -66,6 +71,7 @@ function GameManager() {
         isHero={true}
         onAction={charAction}
         isTurn={isHeroTurn}
+        lastAction={lastAct}
       />
     </>
   );

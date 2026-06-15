@@ -32,6 +32,8 @@ export const usePotion = (potion, qnt, data, setData) => {
       break;
   }
 
+  if (data.HP > data.HP_MAX) data.HP = data.HP_MAX;
+
   // removing potion from inventory
   const updatedData = removePotion(data, potion, qnt);
 
@@ -82,7 +84,8 @@ export const actionsMenu = (
       break;
   }
 
-  console.log(dataCha, dataOpponent);
+  if (dataCha.HP >= dataCha.HP_MAX) dataCha.HP = dataCha.HP_MAX;
+
   setDataCha(dataCha);
   setDataOpponent(dataOpponent);
 };

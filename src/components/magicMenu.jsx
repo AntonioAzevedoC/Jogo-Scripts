@@ -15,6 +15,7 @@ const MagicMenu = ({
       {dataCha.spells.map((mag) => {
         return (
           <button
+            key={mag}
             onClick={() => {
               actionsMenu(
                 `${mag}`,
@@ -24,6 +25,7 @@ const MagicMenu = ({
                 setDataOpponent,
               );
               onAction(`${mag}`);
+              onClose();
             }}
           >
             {mag}

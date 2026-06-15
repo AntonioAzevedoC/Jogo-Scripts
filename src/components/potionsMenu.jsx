@@ -9,9 +9,10 @@ const PotionsMenu = ({ onAction, onClose, dataCha, setDataCha }) => {
         if (qnt === 0) return; // Potion doesn't appear if the quantity is zero
         return (
           <button
+            key={pot}
             onClick={() => {
               usePotion(`${pot}`, qnt, dataCha, setDataCha);
-              onAction("potion");
+              onAction(`Poção de ${pot}`);
               onClose();
             }}
           >
