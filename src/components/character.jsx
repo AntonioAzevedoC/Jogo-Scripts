@@ -102,7 +102,10 @@ export default function Character({
       const user = lastAction[1];
       const msg = lastAction[2];
 
-      if (action === "Fugir") setLastActionMsg(`${user} tentou fugir, ${msg}`);
+      console.log(action === "Fugir");
+      if (action === "Fugir") setLastActionMsg(`${user} tentou fugir, ${msg}.`);
+      else if (action === "Preparo")
+        setLastActionMsg(`${user} tentou usar Preparo, ${msg}.`);
       else setLastActionMsg(`${lastAction[1]} usou ${lastAction[0]}`);
     }
   }, [lastAction]);

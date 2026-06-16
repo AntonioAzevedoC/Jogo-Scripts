@@ -51,6 +51,8 @@ export const actionsMenu = (
   dataOpponent,
   setDataOpponent,
 ) => {
+  let response = "";
+
   switch (attType) {
     case "Espancar":
       // Reduce opponent HP by character physical attack minus the opponent's physical defence
@@ -68,7 +70,9 @@ export const actionsMenu = (
         dataCha.PHY_DMG += 10;
         dataCha.MAG_DMG += 10;
         dataCha.MAG_DEF += 10;
-      }
+
+        response = "e conseguiu";
+      } else response = "e falhou";
       break;
     case "Raio":
       // Reduce opponent HP by character magic attack minus the opponent's magic defence
@@ -94,8 +98,10 @@ export const actionsMenu = (
       break;
     case "Fugir":
       // 20% Chance of being able to run away
-      if (getRandomInt(1, 5) === 5) return "e conseguiu.";
-      else return "e falhou.";
+      if (getRandomInt(1, 5) === 5) {
+        dataCha.fled = true;
+        response = "e conseguiu";
+      } else response = "e falhou";
       break;
   }
 
@@ -104,5 +110,5 @@ export const actionsMenu = (
   setDataCha(dataCha);
   setDataOpponent(dataOpponent);
 
-  return null;
+  return response;
 };

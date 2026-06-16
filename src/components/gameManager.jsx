@@ -15,6 +15,7 @@ function GameManager() {
   const [round, setRound] = useState(0);
   const [gameWon, setGameWon] = useState(false);
   const [gameLost, setGameLost] = useState(false);
+  const [gameFled, setGameFled] = useState(false);
   const [lastAct, setLastAct] = useState([]);
   const [isHeroTurn, setIsHeroTurn] = useState(true);
   const [isVillainTurn, setIsVillainTurn] = useState(false);
@@ -23,10 +24,11 @@ function GameManager() {
   const [heroState, setHeroState] = useState(hero);
   const [villainState, setVillainState] = useState(mageVillain);
 
-  // useEffect to check you player won or lost the game
+  // useEffect to check you player won, lost, or fled the game
   useEffect(() => {
     if (heroState.HP <= 0) setGameLost(true);
     if (villainState.HP <= 0) setGameWon(true);
+    if (heroState.fled === true) setGameFled(true);
   }, [JSON.stringify(heroState), JSON.stringify(villainState)]);
 
   // Function to handle character action
@@ -38,7 +40,8 @@ function GameManager() {
     ]);
 
     // In case game is alredy won or lost, return (To prevent enemy from taking one more turn)
-    if (heroState.HP <= 0 || villainState.HP <= 0) return;
+    if (heroState.fled === true || heroState.HP <= 0 || villainState.HP <= 0)
+      return;
 
     // Adding delay to switching turns, so that action messages appear
     if (isHeroTurn) {
@@ -68,6 +71,13 @@ function GameManager() {
       {gameLost && (
         <>
           <h1>Você perdeu.</h1>
+        </>
+      )}
+
+      {/* Message if game is fled */}
+      {gameFled && (
+        <>
+          <h1>Você Fugiu.</h1>
         </>
       )}
 

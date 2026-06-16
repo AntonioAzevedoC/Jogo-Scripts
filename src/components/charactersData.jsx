@@ -6,6 +6,7 @@ export const hero = {
   PHY_DEF: 20,
   MAG_DMG: 50,
   MAG_DEF: 20,
+  fled: false,
 
   attacks: ["Espancar", "Aparar", "Preparo"],
   spells: ["Raio", "Amaldiçoar", "Roubar Vida"],
