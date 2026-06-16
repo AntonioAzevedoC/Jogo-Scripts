@@ -84,10 +84,17 @@ export const actionsMenu = (
       dataOpponent.HP -= dataCha.MAG_DMG / 2 - dataOpponent.MAG_DEF;
       dataCha.HP += dataCha.MAG_DMG / 2 - dataOpponent.MAG_DEF;
       break;
+    case "Fugir":
+      // 20% Chance of being able to run away
+      if (getRandomInt(1, 5) === 5) return "e conseguiu.";
+      else return "e falhou.";
+      break;
   }
 
   if (dataCha.HP >= dataCha.HP_MAX) dataCha.HP = dataCha.HP_MAX;
 
   setDataCha(dataCha);
   setDataOpponent(dataOpponent);
+
+  return null;
 };

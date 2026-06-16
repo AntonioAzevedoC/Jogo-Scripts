@@ -18,14 +18,14 @@ const AttackMenu = ({
           <button
             key={atk}
             onClick={() => {
-              actionsMenu(
+              const msg = actionsMenu(
                 `${atk}`,
                 dataCha,
                 setDataCha,
                 dataOpponent,
                 setDataOpponent,
               );
-              onAction(`${atk}`);
+              onAction(`${atk}`, msg);
               onClose();
             }}
           >

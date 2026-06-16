@@ -25,6 +25,7 @@ export default function Character({
   const [attackMenu, setAttackMenu] = useState(false);
   const [magicMenu, setMagicMenu] = useState(false);
   const [potionsMenu, setPotionsMenu] = useState(false);
+  const [lastActionMsg, setLastActionMsg] = useState("");
 
   // State for enemy action
   const [enemyTookAction, setEnemyTookAction] = useState(false);
@@ -34,8 +35,9 @@ export default function Character({
 
   // Defining enemy actions
   useEffect(() => {
+    // If enemy HP is bellow thirty percent, use healing potion
+    // Else, use either a spell or an attack depending the biggest one out of MAG_DMG and PHY_DMG
     if (!isHero && isTurn) {
-      console.log(dataCha.potions.length, dataCha.potions);
       if (dataCha.HP <= dataCha.HP_MAX * 0.3 && dataCha.potions.length !== 0) {
         onAction(`Poção de ${dataCha.potions[0][0]}`);
         usePotion(
@@ -68,32 +70,6 @@ export default function Character({
     }
   }, [isTurn]);
 
-  // if (isTurn && !isHero && enemyTookAction === false) {
-  //   // If enemy HP is bellow thirty percent, use healing potion
-  //   // Else, use either a spell or an attack depending the biggest one out of MAG_DMG and PHY_DMG
-  //   if (dataCha.HP <= dataCha.HP_MAX * 0.3 && dataCha.potions.length !== 0) {
-  //     usePotion(
-  //       dataCha.potions[0][0],
-  //       dataCha.potions[0][1],
-  //       dataCha,
-  //       setDataCha,
-  //     );
-  //     onAction(`Poção de ${dataCha.potions[0][0]}`);
-  //     setEnemyTookAction(true);
-  //   } else if (dataCha.PHY_DMG > dataCha.MAG_DMG) {
-  //     const i = getRandomInt(0, 2);
-  //     actionsMenu(
-  //       `${dataCha.attacks[i]}`,
-  //       dataCha,
-  //       setDataCha,
-  //       dataOpponent,
-  //       setDataOpponent,
-  //     );
-  //     onAction(`${dataCha.attacks[i]}`);
-  //     setEnemyTookAction(true);
-  //   }
-  // }
-
   // Function to open attack menu
   const openAttackMenu = () => {
     setAttackMenu(true);
@@ -116,6 +92,18 @@ export default function Character({
     setPotionsMenu(false);
     setMagicMenu(false);
   };
+
+  // Function to create last action message
+  useEffect(() => {
+    if (lastAction?.length && lastAction?.length !== 0) {
+      const action = lastAction[0];
+      const user = lastAction[1];
+      const msg = lastAction[2];
+
+      if (action === "Fugir") setLastActionMsg(`${user} tentou fugir, ${msg}`);
+      else setLastActionMsg(`${lastAction[1]} usou ${lastAction[0]}`);
+    }
+  }, [lastAction]);
 
   return (
     <div className="character">
@@ -148,7 +136,19 @@ export default function Character({
               <button disabled={!isTurn} onClick={() => openPotionsMenu()}>
                 Usar Poção
               </button>
-              <button disabled={!isTurn} onClick={() => onAction("Flee")}>
+              <button
+                disabled={!isTurn}
+                onClick={() => {
+                  const msg = actionsMenu(
+                    `Fugir`,
+                    dataCha,
+                    setDataCha,
+                    dataOpponent,
+                    setDataOpponent,
+                  );
+                  onAction(`Fugir`, msg);
+                }}
+              >
                 Fugir
               </button>
             </>
@@ -191,12 +191,12 @@ export default function Character({
       )}
 
       {/* If turn is over, show message */}
-      {lastAction?.length && lastAction?.length !== 0 ? (
+      {lastActionMsg !== "" ? (
         <div className="messages">
           <h2>
             <TypewriterComponent
               options={{
-                strings: [`${lastAction[1]} usou ${lastAction[0]}`],
+                strings: [lastActionMsg],
                 autoStart: true,
                 delay: 40,
                 loop: true,
@@ -211,7 +211,7 @@ export default function Character({
   );
 }
 
-// Enemy takes a random action, add weights to actions
+// Add "run" function
 // Add win and lose condition (HP = 0)
 // Add three different enemies to choose from, and page to choose enemy
 // Add some art
@@ -220,3 +220,4 @@ export default function Character({
 
 // After action, change turns
 // Also change turns after enemy turn
+// Enemy takes a random action, add weights to actions
