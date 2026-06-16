@@ -1,3 +1,5 @@
+import { getRandomInt } from "./helpers";
+
 function arraysEqual(a, b) {
   return a[0] === b[0] && a[1] === b[1];
 }
@@ -27,8 +29,8 @@ export const usePotion = (potion, qnt, data, setData) => {
     case "Cura":
       data.HP += 30;
       break;
-    case "Velocidade":
-      data.SPEED += 30;
+    case "Força":
+      data.PHY_DMG += 30;
       break;
   }
 
@@ -57,23 +59,23 @@ export const actionsMenu = (
     case "Aparar":
       // Reduce opponent HP by half character attack, raise physical defence by 10
       dataOpponent.HP -= dataCha.PHY_DMG / 2;
-      dataCha.PHY_DEF += 10;
+      dataCha.PHY_DEF += 5;
       break;
     case "Preparo":
-      // Improve all character stats by 10
-      dataCha.PHY_DEF += 10;
-      dataCha.PHY_DMG += 10;
-      dataCha.MAG_DMG += 10;
-      dataCha.MAG_DEF += 10;
-      dataCha.SPEED += 10;
+      // 20% chance to Improve all character stats by 10
+      if (getRandomInt(1, 5) === 5) {
+        dataCha.PHY_DEF += 10;
+        dataCha.PHY_DMG += 10;
+        dataCha.MAG_DMG += 10;
+        dataCha.MAG_DEF += 10;
+      }
       break;
     case "Raio":
       // Reduce opponent HP by character magic attack minus the opponent's magic defence
       dataOpponent.HP -= dataCha.MAG_DMG - dataOpponent.MAG_DEF;
       break;
     case "Amaldiçoar":
-      // Reduce opponent speed, defence and magical defence by 10
-      dataOpponent.SPEED -= 10;
+      // Reduce opponent defence and magical defence by 10
       dataOpponent.PHY_DEF -= 10;
       dataOpponent.MAG_DEF -= 10;
       break;

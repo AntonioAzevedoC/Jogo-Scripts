@@ -3,9 +3,9 @@ import Character from "./character";
 
 function GameManager() {
   const [round, setRound] = useState(0);
+  const [lastAct, setLastAct] = useState([]);
   const [isHeroTurn, setIsHeroTurn] = useState(true);
   const [isVillainTurn, setIsVillainTurn] = useState(false);
-  const [lastAct, setLastAct] = useState([]);
 
   const hero = {
     NAME: "Home(r)", // These suggestions are so stupid
@@ -15,32 +15,27 @@ function GameManager() {
     PHY_DEF: 20,
     MAG_DMG: 50,
     MAG_DEF: 20,
-    SPEED: 100, // Whoever has greater speed acts first, if one character has more than double the speed of the other, it acts twice
 
     attacks: ["Espancar", "Aparar", "Preparo"],
     spells: ["Raio", "Amaldiçoar", "Roubar Vida"],
     potions: [
       ["Cura", 2],
-      ["Velocidade", 1],
+      ["Força", 1],
     ],
   };
 
   const villain = {
     NAME: "Villain Guy",
-    HP: 200,
-    HP_MAX: 200,
+    HP: 100,
+    HP_MAX: 100,
     PHY_DMG: 50,
     PHY_DEF: 20,
-    MAG_DMG: 50,
-    MAG_DEF: 20,
-    SPEED: 100, // Whoever has greater speed acts first, if one character has more than double the speed of the other, it acts twice
+    MAG_DMG: 51,
+    MAG_DEF: 10,
 
     attacks: ["Espancar", "Aparar", "Preparo"],
     spells: ["Raio", "Amaldiçoar", "Roubar Vida"],
-    potions: [
-      ["Cura", 2],
-      ["Velocidade", 1],
-    ],
+    potions: [["Cura", 2]],
   };
 
   const [heroState, setHeroState] = useState(hero);

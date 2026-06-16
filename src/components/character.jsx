@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import TypewriterComponent from "typewriter-effect";
 
 import AttackMenu from "./attackMenu";
 import MagicMenu from "./magicMenu";
 import PotionsMenu from "./potionsMenu";
+
+import { actionsMenu } from "./gameFunctions";
+import { usePotion } from "./gameFunctions";
+
+import { getRandomInt } from "./helpers";
 
 export default function Character({
   dataCha,
@@ -21,8 +26,73 @@ export default function Character({
   const [magicMenu, setMagicMenu] = useState(false);
   const [potionsMenu, setPotionsMenu] = useState(false);
 
+  // State for enemy action
+  const [enemyTookAction, setEnemyTookAction] = useState(false);
+
   // Defining life bar percentage
   const lifePercent = Math.max(0, dataCha.HP) + "%";
+
+  // Defining enemy actions
+  useEffect(() => {
+    if (!isHero && isTurn) {
+      console.log(dataCha.potions.length, dataCha.potions);
+      if (dataCha.HP <= dataCha.HP_MAX * 0.3 && dataCha.potions.length !== 0) {
+        onAction(`Poção de ${dataCha.potions[0][0]}`);
+        usePotion(
+          dataCha.potions[0][0],
+          dataCha.potions[0][1],
+          dataCha,
+          setDataCha,
+        );
+      } else if (dataCha.PHY_DMG >= dataCha.MAG_DMG) {
+        const i = getRandomInt(0, 2);
+        onAction(`${dataCha.attacks[i]}`);
+        actionsMenu(
+          `${dataCha.attacks[i]}`,
+          dataCha,
+          setDataCha,
+          dataOpponent,
+          setDataOpponent,
+        );
+      } else if (dataCha.MAG_DMG > dataCha.PHY_DMG) {
+        const i = getRandomInt(0, 2);
+        onAction(`${dataCha.spells[i]}`);
+        actionsMenu(
+          `${dataCha.spells[i]}`,
+          dataCha,
+          setDataCha,
+          dataOpponent,
+          setDataOpponent,
+        );
+      }
+    }
+  }, [isTurn]);
+
+  // if (isTurn && !isHero && enemyTookAction === false) {
+  //   // If enemy HP is bellow thirty percent, use healing potion
+  //   // Else, use either a spell or an attack depending the biggest one out of MAG_DMG and PHY_DMG
+  //   if (dataCha.HP <= dataCha.HP_MAX * 0.3 && dataCha.potions.length !== 0) {
+  //     usePotion(
+  //       dataCha.potions[0][0],
+  //       dataCha.potions[0][1],
+  //       dataCha,
+  //       setDataCha,
+  //     );
+  //     onAction(`Poção de ${dataCha.potions[0][0]}`);
+  //     setEnemyTookAction(true);
+  //   } else if (dataCha.PHY_DMG > dataCha.MAG_DMG) {
+  //     const i = getRandomInt(0, 2);
+  //     actionsMenu(
+  //       `${dataCha.attacks[i]}`,
+  //       dataCha,
+  //       setDataCha,
+  //       dataOpponent,
+  //       setDataOpponent,
+  //     );
+  //     onAction(`${dataCha.attacks[i]}`);
+  //     setEnemyTookAction(true);
+  //   }
+  // }
 
   // Function to open attack menu
   const openAttackMenu = () => {
@@ -41,21 +111,11 @@ export default function Character({
 
   // Function to close menus
   const closeMenus = () => {
+    setEnemyTookAction(false);
     setAttackMenu(false);
     setPotionsMenu(false);
     setMagicMenu(false);
   };
-
-  const type = (
-    <TypewriterComponent
-      options={{
-        autoStart: true,
-        delay: 40,
-        loop: true,
-        skipAddStyles: true,
-      }}
-    />
-  );
 
   return (
     <div className="character">
