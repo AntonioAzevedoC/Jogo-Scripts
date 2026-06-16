@@ -105,6 +105,7 @@ export default function Character({
     }
   }, [lastAction]);
 
+  // Returning character component
   return (
     <div className="character">
       {/* HP bar */}
@@ -191,7 +192,7 @@ export default function Character({
       )}
 
       {/* If turn is over, show message */}
-      {lastActionMsg !== "" ? (
+      {lastActionMsg !== "" && !isTurn ? (
         <div className="messages">
           <h2>
             <TypewriterComponent
@@ -211,7 +212,6 @@ export default function Character({
   );
 }
 
-// Add "run" function
 // Add win and lose condition (HP = 0)
 // Add three different enemies to choose from, and page to choose enemy
 // Add some art
@@ -221,3 +221,4 @@ export default function Character({
 // After action, change turns
 // Also change turns after enemy turn
 // Enemy takes a random action, add weights to actions
+// Add "flee" function
