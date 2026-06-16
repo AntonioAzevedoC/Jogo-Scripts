@@ -20,6 +20,8 @@ export default function Character({
   onAction,
   isTurn,
   lastAction,
+  gameWon,
+  gameLost,
 }) {
   // State for menus
   const [attackMenu, setAttackMenu] = useState(false);
@@ -31,7 +33,7 @@ export default function Character({
   const [enemyTookAction, setEnemyTookAction] = useState(false);
 
   // Defining life bar percentage
-  const lifePercent = Math.max(0, dataCha.HP) + "%";
+  const lifePercent = Math.max(0, (dataCha.HP / dataCha.HP_MAX) * 100) + "%";
 
   // Defining enemy actions
   useEffect(() => {
@@ -117,7 +119,7 @@ export default function Character({
       {/* Character art */}
       <div className="sprite">Desenho Personagem</div>
       <h1>
-        {dataCha.NAME} - Nome do {isHero ? "Herói" : "Vilão"}
+        {isHero ? "Herói" : "Vilão"} - {dataCha.NAME}
       </h1>
 
       {/* Main Menu */}
@@ -126,19 +128,25 @@ export default function Character({
           {isTurn && (
             <>
               <button
-                disabled={!isTurn}
+                disabled={!isTurn || gameLost || gameWon}
                 onClick={() => openAttackMenu(setDataCha, setDataOpponent)}
               >
                 Atacar
               </button>
-              <button disabled={!isTurn} onClick={() => openMagicMenu()}>
+              <button
+                disabled={!isTurn || gameLost || gameWon}
+                onClick={() => openMagicMenu()}
+              >
                 Magias
               </button>
-              <button disabled={!isTurn} onClick={() => openPotionsMenu()}>
+              <button
+                disabled={!isTurn || gameLost || gameWon}
+                onClick={() => openPotionsMenu()}
+              >
                 Usar Poção
               </button>
               <button
-                disabled={!isTurn}
+                disabled={!isTurn || gameLost || gameWon}
                 onClick={() => {
                   const msg = actionsMenu(
                     `Fugir`,
@@ -212,7 +220,6 @@ export default function Character({
   );
 }
 
-// Add win and lose condition (HP = 0)
 // Add three different enemies to choose from, and page to choose enemy
 // Add some art
 
@@ -222,3 +229,4 @@ export default function Character({
 // Also change turns after enemy turn
 // Enemy takes a random action, add weights to actions
 // Add "flee" function
+// Add win and lose condition (HP = 0)

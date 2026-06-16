@@ -72,7 +72,15 @@ export const actionsMenu = (
       break;
     case "Raio":
       // Reduce opponent HP by character magic attack minus the opponent's magic defence
+      // Reduce opponent magical defence by 5
       dataOpponent.HP -= dataCha.MAG_DMG - dataOpponent.MAG_DEF;
+      dataOpponent.MAG_DEF -= 10;
+      break;
+    case "Bola de Fogo":
+      // Reduce opponent HP by character magic attack minus the opponent's magic defence
+      // Reduce physical magical defence by 5
+      dataOpponent.HP -= dataCha.MAG_DMG - dataOpponent.MAG_DEF;
+      dataOpponent.PHY_DEF -= 10;
       break;
     case "Amaldiçoar":
       // Reduce opponent defence and magical defence by 10

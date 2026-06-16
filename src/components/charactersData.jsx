@@ -1,6 +1,6 @@
 export const hero = {
   NAME: "Home(r)", // These suggestions are so stupid
-  HP: 90,
+  HP: 100,
   HP_MAX: 100,
   PHY_DMG: 50,
   PHY_DEF: 20,
@@ -15,16 +15,16 @@ export const hero = {
   ],
 };
 
-export const villain = {
-  NAME: "Villain Guy",
-  HP: 100,
-  HP_MAX: 100,
-  PHY_DMG: 50,
-  PHY_DEF: 20,
-  MAG_DMG: 51,
-  MAG_DEF: 10,
+export const mageVillain = {
+  NAME: "Marvolo, o mago",
+  HP: 80,
+  HP_MAX: 80,
+  PHY_DMG: 10,
+  PHY_DEF: 15,
+  MAG_DMG: 60,
+  MAG_DEF: 60,
 
   attacks: ["Espancar", "Aparar", "Preparo"],
-  spells: ["Raio", "Amaldiçoar", "Roubar Vida"],
+  spells: ["Raio", "Bola de Fogo", "Roubar Vida"],
   potions: [["Cura", 2]],
 };

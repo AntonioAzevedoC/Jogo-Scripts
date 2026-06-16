@@ -4,7 +4,7 @@ import Character from "./character";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 
-import { villain, hero } from "./charactersData";
+import { mageVillain, hero } from "./charactersData";
 import { waitTime } from "./helpers";
 
 function GameManager() {
@@ -21,7 +21,7 @@ function GameManager() {
 
   // Characters state
   const [heroState, setHeroState] = useState(hero);
-  const [villainState, setVillainState] = useState(villain);
+  const [villainState, setVillainState] = useState(mageVillain);
 
   // useEffect to check you player won or lost the game
   useEffect(() => {
@@ -37,6 +37,10 @@ function GameManager() {
       msg,
     ]);
 
+    // In case game is alredy won or lost, return (To prevent enemy from taking one more turn)
+    if (heroState.HP <= 0 || villainState.HP <= 0) return;
+
+    // Adding delay to switching turns, so that action messages appear
     if (isHeroTurn) {
       setIsHeroTurn((prev) => !prev);
       setTimeout(() => {
@@ -76,6 +80,8 @@ function GameManager() {
         isHero={false}
         onAction={charAction}
         isTurn={isVillainTurn}
+        gameWon={gameWon}
+        gameLost={gameLost}
       />
       <Character
         dataCha={heroState}
@@ -86,6 +92,8 @@ function GameManager() {
         onAction={charAction}
         isTurn={isHeroTurn}
         lastAction={lastAct}
+        gameWon={gameWon}
+        gameLost={gameLost}
       />
     </>
   );
