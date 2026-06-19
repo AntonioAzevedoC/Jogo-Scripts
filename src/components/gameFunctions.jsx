@@ -105,10 +105,15 @@ export const actionsMenu = (
       break;
   }
 
+  // Preventing healing from going over HP max
   if (dataCha.HP >= dataCha.HP_MAX) dataCha.HP = dataCha.HP_MAX;
+  if (dataOpponent.HP >= dataOpponent.HP_MAX)
+    dataOpponent.HP = dataOpponent.HP_MAX;
 
+  // Updating data from character and opponent
   setDataCha(dataCha);
   setDataOpponent(dataOpponent);
 
+  // Returning response message (Some actions have it)
   return response;
 };

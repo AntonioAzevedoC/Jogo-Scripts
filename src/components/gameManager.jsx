@@ -4,10 +4,10 @@ import Character from "./character";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 
-import { mageVillain, hero } from "./charactersData";
+import { villains, hero } from "./charactersData";
 import { waitTime } from "./helpers";
 
-function GameManager() {
+function GameManager({ idOpponent, battleRestart }) {
   // Defining window width and height, for confetti effect
   const { width, height } = useWindowSize();
 
@@ -22,7 +22,9 @@ function GameManager() {
 
   // Characters state
   const [heroState, setHeroState] = useState(hero);
-  const [villainState, setVillainState] = useState(mageVillain);
+  const [villainState, setVillainState] = useState(
+    villains.find((v) => v.ID == idOpponent),
+  ); // Finding villain with correct state
 
   // useEffect to check you player won, lost, or fled the game
   useEffect(() => {
@@ -57,27 +59,47 @@ function GameManager() {
     }
   };
 
+  // Function to retry battles
+  const retry = () => {
+    battleRestart(false);
+  };
+
   return (
     <>
       {/* Message if game is won */}
       {gameWon && (
         <>
           <Confetti width={width} height={height} />
-          <h1>Você ganhou!</h1>
+          <div className="__game-over __won">
+            <h1>Você ganhou!</h1>
+            <button className="__replay" onClick={retry}>
+              Jogar Novamente
+            </button>
+          </div>
         </>
       )}
 
       {/* Message if game is lost */}
       {gameLost && (
         <>
-          <h1>Você perdeu.</h1>
+          <div className="__game-over __lost">
+            <h1>Você perdeu.</h1>
+            <button className="__replay" onClick={() => retry()}>
+              Jogar Novamente
+            </button>
+          </div>
         </>
       )}
 
       {/* Message if game is fled */}
       {gameFled && (
         <>
-          <h1>Você Fugiu.</h1>
+          <div className="__game-over __fled">
+            <h1>Você Fugiu.</h1>
+            <button className="__replay" onClick={() => retry()}>
+              Jogar Novamente
+            </button>
+          </div>
         </>
       )}
 
@@ -92,6 +114,7 @@ function GameManager() {
         isTurn={isVillainTurn}
         gameWon={gameWon}
         gameLost={gameLost}
+        gameFled={gameFled}
       />
       <Character
         dataCha={heroState}
@@ -104,6 +127,7 @@ function GameManager() {
         lastAction={lastAct}
         gameWon={gameWon}
         gameLost={gameLost}
+        gameFled={gameFled}
       />
     </>
   );

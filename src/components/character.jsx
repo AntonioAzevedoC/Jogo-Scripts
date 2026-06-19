@@ -22,18 +22,16 @@ export default function Character({
   lastAction,
   gameWon,
   gameLost,
+  gameFled,
 }) {
+  // Defining life bar percentage
+  const lifePercent = Math.max(0, (dataCha.HP / dataCha.HP_MAX) * 100) + "%";
+
   // State for menus
   const [attackMenu, setAttackMenu] = useState(false);
   const [magicMenu, setMagicMenu] = useState(false);
   const [potionsMenu, setPotionsMenu] = useState(false);
   const [lastActionMsg, setLastActionMsg] = useState("");
-
-  // State for enemy action
-  const [enemyTookAction, setEnemyTookAction] = useState(false);
-
-  // Defining life bar percentage
-  const lifePercent = Math.max(0, (dataCha.HP / dataCha.HP_MAX) * 100) + "%";
 
   // Defining enemy actions
   useEffect(() => {
@@ -48,26 +46,26 @@ export default function Character({
           dataCha,
           setDataCha,
         );
-      } else if (dataCha.PHY_DMG >= dataCha.MAG_DMG) {
+      } else if (dataCha.PHY_DMG >= dataCha.MAG_DMG || !dataCha?.spells) {
         const i = getRandomInt(0, 2);
-        onAction(`${dataCha.attacks[i]}`);
-        actionsMenu(
+        const msg = actionsMenu(
           `${dataCha.attacks[i]}`,
           dataCha,
           setDataCha,
           dataOpponent,
           setDataOpponent,
         );
-      } else if (dataCha.MAG_DMG > dataCha.PHY_DMG) {
+        onAction(`${dataCha.attacks[i]}`, msg);
+      } else if (dataCha.MAG_DMG > dataCha.PHY_DMG && dataCha?.spells) {
         const i = getRandomInt(0, 2);
-        onAction(`${dataCha.spells[i]}`);
-        actionsMenu(
+        const msg = actionsMenu(
           `${dataCha.spells[i]}`,
           dataCha,
           setDataCha,
           dataOpponent,
           setDataOpponent,
         );
+        onAction(`${dataCha.spells[i]}`, msg);
       }
     }
   }, [isTurn]);
@@ -89,7 +87,6 @@ export default function Character({
 
   // Function to close menus
   const closeMenus = () => {
-    setEnemyTookAction(false);
     setAttackMenu(false);
     setPotionsMenu(false);
     setMagicMenu(false);
@@ -102,7 +99,6 @@ export default function Character({
       const user = lastAction[1];
       const msg = lastAction[2];
 
-      console.log(action === "Fugir");
       if (action === "Fugir") setLastActionMsg(`${user} tentou fugir, ${msg}.`);
       else if (action === "Preparo")
         setLastActionMsg(`${user} tentou usar Preparo, ${msg}.`);
@@ -131,25 +127,25 @@ export default function Character({
           {isTurn && (
             <>
               <button
-                disabled={!isTurn || gameLost || gameWon}
+                disabled={!isTurn || gameLost || gameWon || gameFled}
                 onClick={() => openAttackMenu(setDataCha, setDataOpponent)}
               >
                 Atacar
               </button>
               <button
-                disabled={!isTurn || gameLost || gameWon}
+                disabled={!isTurn || gameLost || gameWon || gameFled}
                 onClick={() => openMagicMenu()}
               >
                 Magias
               </button>
               <button
-                disabled={!isTurn || gameLost || gameWon}
+                disabled={!isTurn || gameLost || gameWon || gameFled}
                 onClick={() => openPotionsMenu()}
               >
                 Usar Poção
               </button>
               <button
-                disabled={!isTurn || gameLost || gameWon}
+                disabled={!isTurn || gameLost || gameWon || gameFled}
                 onClick={() => {
                   const msg = actionsMenu(
                     `Fugir`,
@@ -223,8 +219,8 @@ export default function Character({
   );
 }
 
-// Add three different enemies to choose from, and page to choose enemy
 // Add some art
+// Add styling
 
 // DONE:
 
@@ -233,3 +229,4 @@ export default function Character({
 // Enemy takes a random action, add weights to actions
 // Add "flee" function
 // Add win and lose condition (HP = 0)
+// Add three different enemies to choose from, and page to choose enemy
