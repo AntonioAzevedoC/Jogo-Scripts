@@ -3,7 +3,7 @@ import { usePotion } from "./gameFunctions";
 // Potions menu component
 const PotionsMenu = ({ onAction, onClose, dataCha, setDataCha }) => {
   return (
-    <div className="actions potions">
+    <div className="actions">
       {/* Potions */}
       {dataCha.potions.map(([pot, qnt]) => {
         if (qnt === 0) return; // Potion doesn't appear if the quantity is zero

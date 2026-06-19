@@ -11,7 +11,7 @@ const AttackMenu = ({
   closeMenus,
 }) => {
   return (
-    <div className="actions attack">
+    <div className="__actions">
       {/* Attacks */}
       {dataCha.attacks.map((atk) => {
         return (

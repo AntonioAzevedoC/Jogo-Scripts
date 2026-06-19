@@ -10,7 +10,7 @@ const MagicMenu = ({
   setDataOpponent,
 }) => {
   return (
-    <div className="actions spells">
+    <div className="__actions">
       {/* Spells */}
       {dataCha.spells.map((mag) => {
         return (

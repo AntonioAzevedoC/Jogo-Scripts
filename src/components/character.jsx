@@ -108,7 +108,7 @@ export default function Character({
 
   // Returning character component
   return (
-    <div className="character">
+    <div className="__character">
       {/* HP bar */}
       <div className="life-bar">
         <div className="life-fill" style={{ width: lifePercent }}></div>
@@ -142,7 +142,7 @@ export default function Character({
                 disabled={!isTurn || gameLost || gameWon || gameFled}
                 onClick={() => openPotionsMenu()}
               >
-                Usar Poção
+                Poções
               </button>
               <button
                 disabled={!isTurn || gameLost || gameWon || gameFled}
