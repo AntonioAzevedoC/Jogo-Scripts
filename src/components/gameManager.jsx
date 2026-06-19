@@ -21,10 +21,10 @@ function GameManager({ idOpponent, battleRestart }) {
   const [isVillainTurn, setIsVillainTurn] = useState(false);
 
   // Characters state
-  const [heroState, setHeroState] = useState(hero);
-  const [villainState, setVillainState] = useState(
-    villains.find((v) => v.ID == idOpponent),
-  ); // Finding villain with correct state
+  const [heroState, setHeroState] = useState({ ...hero });
+  const [villainState, setVillainState] = useState({
+    ...villains.find((v) => v.ID == idOpponent),
+  }); // Finding villain with correct state
 
   // useEffect to check you player won, lost, or fled the game
   useEffect(() => {

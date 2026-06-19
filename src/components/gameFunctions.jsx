@@ -8,6 +8,11 @@ function searchForArray(bigArray, searchArray) {
   return bigArray.findIndex((a) => arraysEqual(a, searchArray));
 }
 
+// Converting negative damage to 0, to prevent accidental healing
+const damageConverter = (dmg) => {
+  return dmg < 0 ? 0 : dmg;
+};
+
 // Function to remove potion from inventory
 const removePotion = (data, potion, qnt) => {
   // Find index of the potion
@@ -34,6 +39,7 @@ export const usePotion = (potion, qnt, data, setData) => {
       break;
   }
 
+  // Preventing HP from going over max
   if (data.HP > data.HP_MAX) data.HP = data.HP_MAX;
 
   // removing potion from inventory
@@ -56,11 +62,15 @@ export const actionsMenu = (
   switch (attType) {
     case "Espancar":
       // Reduce opponent HP by character physical attack minus the opponent's physical defence
-      dataOpponent.HP -= dataCha.PHY_DMG - dataOpponent.PHY_DEF;
+      dataOpponent.HP -= damageConverter(
+        dataCha.PHY_DMG - dataOpponent.PHY_DEF,
+      );
       break;
     case "Aparar":
       // Reduce opponent HP by half character attack, raise physical defence by 10
-      dataOpponent.HP -= dataCha.PHY_DMG / 2;
+      dataOpponent.HP -= damageConverter(
+        dataCha.PHY_DMG / 2 - dataOpponent.PHY_DEF,
+      );
       dataCha.PHY_DEF += 5;
       break;
     case "Preparo":
@@ -77,13 +87,17 @@ export const actionsMenu = (
     case "Raio":
       // Reduce opponent HP by character magic attack minus the opponent's magic defence
       // Reduce opponent magical defence by 5
-      dataOpponent.HP -= dataCha.MAG_DMG - dataOpponent.MAG_DEF;
+      dataOpponent.HP -= damageConverter(
+        dataCha.MAG_DMG - dataOpponent.MAG_DEF,
+      );
       dataOpponent.MAG_DEF -= 10;
       break;
     case "Bola de Fogo":
       // Reduce opponent HP by character magic attack minus the opponent's magic defence
       // Reduce physical magical defence by 5
-      dataOpponent.HP -= dataCha.MAG_DMG - dataOpponent.MAG_DEF;
+      dataOpponent.HP -= damageConverter(
+        dataCha.MAG_DMG - dataOpponent.MAG_DEF,
+      );
       dataOpponent.PHY_DEF -= 10;
       break;
     case "Amaldiçoar":
@@ -93,8 +107,10 @@ export const actionsMenu = (
       break;
     case "Roubar Vida":
       // Reduce opponent HP by half character magic attack, raise HP by the same amount minus the magic defence
-      dataOpponent.HP -= dataCha.MAG_DMG / 2 - dataOpponent.MAG_DEF;
-      dataCha.HP += dataCha.MAG_DMG / 2 - dataOpponent.MAG_DEF;
+      dataOpponent.HP -= damageConverter(
+        dataCha.MAG_DMG / 2 - dataOpponent.MAG_DEF,
+      );
+      dataCha.HP += damageConverter(dataCha.MAG_DMG / 2 - dataOpponent.MAG_DEF);
       break;
     case "Fugir":
       // 20% Chance of being able to run away
@@ -109,6 +125,9 @@ export const actionsMenu = (
   if (dataCha.HP >= dataCha.HP_MAX) dataCha.HP = dataCha.HP_MAX;
   if (dataOpponent.HP >= dataOpponent.HP_MAX)
     dataOpponent.HP = dataOpponent.HP_MAX;
+  // Preventing HP from becoming less than 0
+  if (dataCha.HP < 0) dataCha.HP = 0;
+  if (dataOpponent.HP < 0) dataOpponent.HP = 0;
 
   // Updating data from character and opponent
   setDataCha(dataCha);

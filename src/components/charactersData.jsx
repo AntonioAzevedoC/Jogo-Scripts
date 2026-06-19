@@ -24,25 +24,25 @@ export const hero = {
 const mageVillain = {
   ID: 400,
   NAME: "Marvolo, o mago",
-  HP: 1,
+  HP: 80,
   HP_MAX: 80,
   PHY_DMG: 10,
   PHY_DEF: 15,
-  MAG_DMG: 80,
+  MAG_DMG: 60,
   MAG_DEF: 60,
   IMAGE: imgMage,
 
   attacks: ["Espancar", "Aparar", "Preparo"],
   spells: ["Raio", "Bola de Fogo", "Roubar Vida"],
-  // potions: [["Cura", 2]],
+  potions: [["Cura", 2]],
 };
 
 const barbVillain = {
   ID: 401,
   NAME: "Bjorn, o bárbaro",
-  HP: 180,
-  HP_MAX: 180,
-  PHY_DMG: 65,
+  HP: 170,
+  HP_MAX: 170,
+  PHY_DMG: 60,
   PHY_DEF: 20,
   MAG_DMG: 20,
   MAG_DEF: 10,
@@ -60,12 +60,12 @@ const assassinVillain = {
   HP: 90,
   HP_MAX: 90,
   PHY_DMG: 70,
-  PHY_DEF: 30,
+  PHY_DEF: 20,
   MAG_DMG: 10,
   MAG_DEF: 10,
   IMAGE: imgAss,
 
-  attacks: ["Espancar", "Assassinar", "Esconder"],
+  attacks: ["Espancar", "Aparar", "Preparo"],
   potions: [["Cura", 2]],
 };
 
